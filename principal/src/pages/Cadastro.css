@@ -1,0 +1,26 @@
+.cadastro-container {
+max-width: 1000px;
+margin: 0 auto;
+padding: 40px;
+}
+
+.cadastro-container h1 {
+margin-bottom: 15px;
+}
+
+.cadastro-container p {
+margin-bottom: 30px;
+}
+
+.cadastro-opcoes {
+display: flex;
+gap: 20px;
+}
+
+.cadastro-opcoes button {
+padding: 12px 20px;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+font-size: 16px;
+}

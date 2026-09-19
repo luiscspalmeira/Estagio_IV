@@ -1,0 +1,30 @@
+
+.cadastro-estudante-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.cadastro-estudante-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cadastro-estudante-container form div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cadastro-estudante-container input {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.cadastro-estudante-container button {
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+

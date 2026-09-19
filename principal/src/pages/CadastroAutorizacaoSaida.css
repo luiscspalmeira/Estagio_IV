@@ -1,0 +1,38 @@
+
+.cadastro-autorizacao-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.cadastro-autorizacao-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cadastro-autorizacao-container form div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cadastro-autorizacao-container input,
+.cadastro-autorizacao-container select,
+.cadastro-autorizacao-container textarea {
+  padding: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.cadastro-autorizacao-container textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.cadastro-autorizacao-container button {
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+

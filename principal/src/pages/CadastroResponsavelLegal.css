@@ -1,0 +1,32 @@
+
+.cadastro-responsavel-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.cadastro-responsavel-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cadastro-responsavel-container form div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cadastro-responsavel-container input,
+.cadastro-responsavel-container select {
+  padding: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.cadastro-responsavel-container button {
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+

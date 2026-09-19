@@ -1,0 +1,117 @@
+
+.cadastro-avaliacao-multidisciplinar {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.avaliacao-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.avaliacao-container h1 {
+  margin-bottom: 10px;
+}
+
+.descricao {
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.cadastro-avaliacao-multidisciplinar section {
+  margin-bottom: 30px;
+  padding: 25px;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.cadastro-avaliacao-multidisciplinar section h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.campo label {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.campo input,
+.campo textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #777777;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+.campo textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+}
+
+.campo small {
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.mensagem-sucesso,
+.mensagem-erro {
+  padding: 15px;
+  margin-bottom: 25px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.mensagem-sucesso {
+  border: 2px solid #216e39;
+  background-color: #f0fff4;
+}
+
+.mensagem-erro {
+  border: 2px solid #b42318;
+  background-color: #fff5f5;
+}
+
+.cadastro-avaliacao-multidisciplinar button {
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cadastro-avaliacao-multidisciplinar button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (max-width: 600px) {
+  .cadastro-avaliacao-multidisciplinar {
+    padding: 20px 12px;
+  }
+
+  .cadastro-avaliacao-multidisciplinar section {
+    padding: 18px;
+  }
+}
+

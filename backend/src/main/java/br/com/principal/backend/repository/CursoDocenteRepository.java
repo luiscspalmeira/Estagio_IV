@@ -1,0 +1,18 @@
+
+package br.com.principal.backend.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import br.com.principal.backend.entity.CursoDocente;
+import br.com.principal.backend.entity.CursoDocenteId;
+
+public interface CursoDocenteRepository
+        extends JpaRepository<CursoDocente, CursoDocenteId> {
+
+    List<CursoDocente> findByIdIdCurso(Long idCurso);
+
+    List<CursoDocente> findByIdIdColaborador(Long idColaborador);
+}
+

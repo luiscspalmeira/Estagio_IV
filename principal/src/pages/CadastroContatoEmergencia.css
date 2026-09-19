@@ -1,0 +1,32 @@
+
+.cadastro-contato-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.cadastro-contato-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cadastro-contato-container form div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cadastro-contato-container input,
+.cadastro-contato-container select {
+  padding: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.cadastro-contato-container button {
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+

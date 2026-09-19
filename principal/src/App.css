@@ -1,0 +1,821 @@
+body {
+  margin: 0;
+
+  min-width: 320px;
+
+  min-height: 100vh;
+
+  background-color: #f5f5f5;
+}
+
+.navbar {
+  width: 100%;
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 40px;
+
+  background-color: #ffffff;
+  border-bottom: 1px solid #dddddd;
+
+  /* Mantém o menu visível no topo durante a rolagem */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.menu {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.menu a {
+  color: #333333;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  transition: 0.2s;
+}
+
+.menu a:hover {
+  color: #646cff;
+}
+
+.conteudo {
+  max-width: 1000px;
+
+  margin: 40px auto;
+
+  padding: 0 20px;
+}
+
+.pagina-fotos {
+  background-color: white;
+
+  padding: 30px;
+
+  border-radius: 12px;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.pagina-fotos h1 {
+  margin-bottom: 10px;
+}
+
+.pagina-fotos p {
+  margin-bottom: 20px;
+}
+
+.preview {
+  margin-top: 30px;
+}
+
+.preview h2 {
+  margin-bottom: 15px;
+}
+
+.preview img {
+  display: block;
+
+  max-width: 500px;
+  width: 100%;
+
+  height: auto;
+
+  border-radius: 10px;
+}
+
+.campo-comentario {
+  margin-top: 25px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.campo-comentario label {
+  font-weight: bold;
+}
+
+.campo-comentario textarea {
+  width: 100%;
+
+  min-height: 120px;
+
+  padding: 12px;
+
+  border: 1px solid #cccccc;
+
+  border-radius: 8px;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 16px;
+
+  resize: vertical;
+}
+
+.campo-comentario textarea:focus {
+  outline: none;
+
+  border-color: #646cff;
+}
+
+.botao-publicar {
+  margin-top: 20px;
+
+  padding: 12px 25px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background-color: #646cff;
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+.botao-publicar:hover {
+  background-color: #535bf2;
+}
+
+.publicacao {
+  margin-top: 40px;
+
+  padding-top: 30px;
+
+  border-top: 1px solid #dddddd;
+}
+
+.publicacao h2 {
+  margin-bottom: 20px;
+}
+
+.publicacao img {
+  display: block;
+
+  width: 100%;
+
+  max-width: 500px;
+
+  border-radius: 10px;
+
+  margin-bottom: 15px;
+}
+
+.publicacao p {
+  font-size: 17px;
+
+  line-height: 1.5;
+}
+
+.feed {
+  margin-top: 50px;
+}
+
+.feed h2 {
+  margin-bottom: 20px;
+}
+
+.post {
+  background-color: white;
+
+  padding: 20px;
+
+  margin-bottom: 25px;
+
+  border-radius: 12px;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.post img {
+  display: block;
+
+  width: 100%;
+
+  max-width: 600px;
+
+  margin: 0 auto 15px;
+
+  border-radius: 10px;
+}
+
+.post p {
+  font-size: 17px;
+
+  line-height: 1.5;
+}
+
+.formulario-post {
+  background-color: white;
+
+  padding: 30px;
+
+  border-radius: 12px;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.post-cabecalho {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 15px;
+}
+
+.post-usuario {
+  font-weight: bold;
+
+  font-size: 16px;
+}
+
+.post-data {
+  color: #777777;
+
+  font-size: 14px;
+}
+
+.post-imagem {
+  display: block;
+
+  width: 100%;
+
+  max-width: 600px;
+
+  margin: 0 auto;
+
+  border-radius: 10px;
+}
+
+.post-acoes {
+  margin-top: 15px;
+
+  margin-bottom: 10px;
+}
+
+.botao-curtir {
+  background: none;
+
+  border: none;
+
+  padding: 5px 0;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+.botao-curtir:hover {
+  opacity: 0.7;
+}
+
+.botao-curtir.curtido {
+  font-weight: bold;
+}
+
+.post-conteudo {
+  margin-top: 5px;
+}
+
+.post-conteudo p {
+  margin-top: 8px;
+
+  line-height: 1.5;
+}
+
+.comentarios {
+  margin-top: 15px;
+}
+
+.comentario {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 12px;
+}
+
+.comentario .avatar-imagem {
+  width: 32px;
+
+  height: 32px;
+
+  font-size: 16px;
+}
+
+.comentario .avatar-nome {
+  font-size: 14px;
+}
+
+.comentario-texto {
+  line-height: 1.4;
+}
+
+.novo-comentario {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 15px;
+}
+
+.novo-comentario input {
+  flex: 1;
+
+  padding: 10px;
+
+  border: 1px solid #cccccc;
+
+  border-radius: 6px;
+}
+
+.novo-comentario button {
+  padding: 10px 15px;
+
+  border: none;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+/* ============================= */
+/* Página de fotos               */
+/* ============================= */
+
+.pagina-fotos {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.feed {
+  margin-top: 30px;
+}
+
+.feed > h2 {
+  margin-bottom: 20px;
+}
+
+/* ============================= */
+/* Formulário de publicação      */
+/* ============================= */
+
+.formulario-post {
+  background-color: white;
+
+  padding: 25px;
+
+  border-radius: 12px;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+  margin-bottom: 30px;
+}
+
+/* ============================= */
+/* Post                          */
+/* ============================= */
+
+.post {
+  background-color: white;
+
+  border-radius: 12px;
+
+  padding: 20px;
+
+  margin-bottom: 25px;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Cabeçalho */
+
+.post-cabecalho {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 15px;
+}
+
+.post-usuario {
+  font-weight: bold;
+
+  font-size: 16px;
+}
+
+.post-data {
+  color: #777;
+
+  font-size: 14px;
+}
+
+/* Imagem */
+
+.post-imagem {
+  display: block;
+
+  width: 100%;
+
+  max-height: 600px;
+
+  object-fit: contain;
+
+  margin: 0 auto;
+
+  border-radius: 10px;
+}
+
+/* Ações */
+
+.post-acoes {
+  display: flex;
+
+  gap: 15px;
+
+  margin-top: 15px;
+
+  margin-bottom: 10px;
+}
+
+.botao-curtir {
+  background: none;
+
+  border: none;
+
+  padding: 5px 0;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+.botao-curtir:hover {
+  opacity: 0.7;
+}
+
+.botao-curtir.curtido {
+  font-weight: bold;
+}
+
+/* Conteúdo */
+
+.post-conteudo {
+  margin-top: 5px;
+}
+
+.post-conteudo p {
+  margin-top: 8px;
+
+  line-height: 1.5;
+}
+
+/* ============================= */
+/* Comentários                   */
+/* ============================= */
+
+.comentarios {
+  margin-top: 20px;
+
+  padding-top: 15px;
+
+  border-top: 1px solid #eeeeee;
+}
+
+.comentario {
+  margin-top: 10px;
+
+  line-height: 1.4;
+}
+
+/* Novo comentário */
+
+.novo-comentario {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+.novo-comentario input {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 10px;
+
+  border: 1px solid #cccccc;
+
+  border-radius: 6px;
+
+  font-size: 14px;
+}
+
+.novo-comentario button {
+  padding: 10px 15px;
+
+  border: none;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+}
+
+.formulario-post h1 {
+  margin-top: 0;
+}
+
+.formulario-post p {
+  color: #666;
+
+  line-height: 1.5;
+}
+
+.formulario-post input[type="file"] {
+  margin-top: 10px;
+
+  margin-bottom: 15px;
+}
+
+.preview {
+  margin-top: 20px;
+}
+
+.preview h2 {
+  font-size: 18px;
+
+  margin-bottom: 10px;
+}
+
+.preview img {
+  display: block;
+
+  width: 100%;
+
+  max-height: 400px;
+
+  object-fit: contain;
+
+  border-radius: 10px;
+}
+
+.campo-comentario {
+  margin-top: 20px;
+}
+
+.campo-comentario label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-weight: bold;
+}
+
+.campo-comentario textarea {
+  width: 100%;
+
+  min-height: 100px;
+
+  box-sizing: border-box;
+
+  padding: 12px;
+
+  border: 1px solid #cccccc;
+
+  border-radius: 8px;
+
+  resize: vertical;
+
+  font-family: inherit;
+
+  font-size: 15px;
+}
+
+.botao-publicar {
+  margin-top: 15px;
+
+  padding: 12px 20px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  font-size: 15px;
+}
+
+@media (max-width: 600px) {
+
+  .pagina-fotos {
+    padding: 15px 10px;
+  }
+
+  .formulario-post {
+    padding: 18px;
+  }
+
+  .post {
+    padding: 15px;
+  }
+
+  .post-cabecalho {
+    align-items: flex-start;
+
+    gap: 10px;
+  }
+
+  .post-data {
+    font-size: 12px;
+
+    text-align: right;
+  }
+
+  .novo-comentario {
+    flex-direction: column;
+  }
+
+  .novo-comentario button {
+    width: 100%;
+  }
+
+}
+
+/* ============================= */
+/* Avatar                        */
+/* ============================= */
+
+.avatar {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.avatar-imagem {
+  width: 40px;
+
+  height: 40px;
+
+  border-radius: 50%;
+
+  background-color: #eeeeee;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 20px;
+}
+
+.avatar-nome {
+  font-weight: bold;
+
+  font-size: 15px;
+}
+
+/* ============================= */
+/* Botão de contraste             */
+/* ============================= */
+
+.botao-contraste {
+  padding: 10px 16px;
+
+  border: 2px solid #333;
+
+  border-radius: 8px;
+
+  background-color: white;
+
+  color: #222;
+
+  font-size: 15px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+.botao-contraste:hover {
+  opacity: 0.85;
+}
+
+.botao-contraste:focus-visible {
+  outline: 4px solid #005fcc;
+
+  outline-offset: 3px;
+}
+
+/* ============================= */
+/* Modo alto contraste            */
+/* ============================= */
+
+body.alto-contraste {
+  background-color: #000000;
+
+  color: #ffffff;
+}
+
+body.alto-contraste .post,
+body.alto-contraste .formulario-post {
+  background-color: #000000;
+
+  color: #ffffff;
+
+  border: 2px solid #ffffff;
+}
+
+body.alto-contraste .post-data {
+  color: #ffffff;
+}
+
+body.alto-contraste .post-conteudo {
+  color: #ffffff;
+}
+
+body.alto-contraste .comentarios {
+  border-top: 2px solid #ffffff;
+}
+
+body.alto-contraste input,
+body.alto-contraste textarea {
+  background-color: #000000;
+
+  color: #ffffff;
+
+  border: 2px solid #ffffff;
+}
+
+body.alto-contraste input::placeholder,
+body.alto-contraste textarea::placeholder {
+  color: #ffffff;
+
+  opacity: 1;
+}
+
+body.alto-contraste button {
+  background-color: #000000;
+
+  color: #ffffff;
+
+  border: 2px solid #ffffff;
+}
+
+body.alto-contraste .avatar-imagem {
+  background-color: #ffffff;
+
+  color: #000000;
+}
+
+body.alto-contraste .botao-contraste {
+  background-color: #ffffff;
+
+  color: #000000;
+
+  border: 2px solid #ffffff;
+}
+
+body.alto-contraste .navbar {
+  background-color: #000000;
+  color: #ffffff;
+  border-bottom: 2px solid #ffffff;
+}
+
+body.alto-contraste .navbar a {
+  color: #ffffff;
+}
+

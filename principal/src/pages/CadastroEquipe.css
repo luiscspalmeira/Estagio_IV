@@ -1,0 +1,95 @@
+
+.cadastro-equipe {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.cadastro-equipe h1 {
+  margin-bottom: 8px;
+}
+
+.cadastro-equipe form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cadastro-equipe fieldset {
+  border: 1px solid #777;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.cadastro-equipe legend {
+  font-weight: 700;
+  padding: 0 8px;
+}
+
+.cadastro-equipe label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.cadastro-equipe input,
+.cadastro-equipe select {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #111;
+}
+
+.cadastro-equipe input:focus,
+.cadastro-equipe select:focus {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+}
+
+.cadastro-equipe button {
+  min-height: 48px;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 6px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cadastro-equipe button:focus {
+  outline: 3px solid #005fcc;
+  outline-offset: 3px;
+}
+
+.mensagem {
+  padding: 16px;
+  margin: 16px 0;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.sucesso {
+  border: 2px solid #146c2e;
+}
+
+.erro {
+  border: 2px solid #a00000;
+}
+
+@media (max-width: 700px) {
+  .cadastro-equipe {
+    padding: 16px;
+  }
+
+  .cadastro-equipe fieldset {
+    padding: 16px;
+  }
+}
+
