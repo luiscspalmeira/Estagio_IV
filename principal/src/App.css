@@ -327,3 +327,238 @@
   align-items: center;
   justify-content: center;
 }
+
+
+/* =========================================================
+   BOTÃO DE ALTO CONTRASTE
+   ========================================================= */
+
+.botao-contraste {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+
+  background-color: #ffffff;
+  color: #222222;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.botao-contraste:hover {
+  background-color: #f1f1f1;
+}
+
+.botao-contraste:focus-visible {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+}
+
+
+/* =========================================================
+   ALTO CONTRASTE
+   ========================================================= */
+
+body.alto-contraste {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+
+/* Texto */
+
+body.alto-contraste h1,
+body.alto-contraste h2,
+body.alto-contraste h3,
+body.alto-contraste h4,
+body.alto-contraste h5,
+body.alto-contraste h6,
+body.alto-contraste p,
+body.alto-contraste label,
+body.alto-contraste span {
+  color: #ffffff;
+}
+
+
+/* Links */
+
+body.alto-contraste a {
+  color: #ffff00;
+}
+
+
+/* Navbar */
+
+body.alto-contraste .navbar {
+  background-color: #000000;
+  border-bottom: 2px solid #ffffff;
+}
+
+body.alto-contraste .navbar-logo a {
+  color: #ffffff;
+}
+
+body.alto-contraste .navbar-links > a {
+  color: #ffffff;
+}
+
+body.alto-contraste .navbar-links > a:hover {
+  background-color: #333333;
+  color: #ffff00;
+}
+
+
+/* Botão Cadastro */
+
+body.alto-contraste .dropdown-button {
+  color: #ffffff;
+}
+
+body.alto-contraste .dropdown-button:hover,
+body.alto-contraste .dropdown-button:focus {
+  background-color: #333333;
+  color: #ffff00;
+}
+
+
+/* Dropdown */
+
+body.alto-contraste .dropdown-menu {
+  background-color: #000000;
+  border: 2px solid #ffffff;
+
+  box-shadow:
+    0 8px 24px rgba(255, 255, 255, 0.2);
+}
+
+body.alto-contraste .dropdown-title,
+body.alto-contraste .dropdown-titulo {
+  color: #ffffff;
+}
+
+body.alto-contraste .dropdown-subtitulo {
+  color: #ffffff;
+}
+
+body.alto-contraste .dropdown-menu a {
+  color: #ffffff;
+}
+
+body.alto-contraste .dropdown-menu a:hover,
+body.alto-contraste .dropdown-menu a:focus {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+
+/* Separadores */
+
+body.alto-contraste .dropdown-separador {
+  background-color: #ffffff;
+}
+
+
+/* Botão Backup */
+
+body.alto-contraste .botao-backup {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+body.alto-contraste .botao-backup:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+
+/* Botão Restore */
+
+body.alto-contraste .botao-restore {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+body.alto-contraste .botao-restore:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+
+/* Botão Contraste */
+
+body.alto-contraste .botao-contraste {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+body.alto-contraste .botao-contraste:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+
+/* Campos de formulário */
+
+body.alto-contraste input,
+body.alto-contraste textarea,
+body.alto-contraste select {
+  background-color: #000000;
+  color: #ffffff;
+
+  border: 2px solid #ffffff;
+}
+
+body.alto-contraste input:focus,
+body.alto-contraste textarea:focus,
+body.alto-contraste select:focus {
+  outline: 3px solid #ffff00;
+  outline-offset: 2px;
+}
+
+
+/* Botões */
+
+body.alto-contraste button {
+  color: #ffffff;
+  background-color: #000000;
+  border-color: #ffffff;
+}
+
+body.alto-contraste button:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+
+/* =========================================================
+   TRANSIÇÃO
+   ========================================================= */
+
+body,
+.navbar,
+.dropdown-menu,
+.botao-backup,
+.botao-restore,
+.botao-contraste {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}

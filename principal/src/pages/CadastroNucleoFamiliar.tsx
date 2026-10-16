@@ -1,6 +1,12 @@
 
-import { type FormEvent, useState } from 'react'
+import { type FormEvent, useEffect, useState } from 'react'
 import './CadastroNucleoFamiliar.css'
+
+interface Estudante {
+  idAluno: number
+  nomeCompleto: string
+  nomeSocial?: string | null
+}
 
 interface NucleoFamiliar {
   idAluno: number
@@ -59,6 +65,50 @@ function CadastroNucleoFamiliar() {
   const [mensagem, setMensagem] = useState('')
   const [erro, setErro] = useState('')
   const [enviando, setEnviando] = useState(false)
+  const [estudantes, setEstudantes] = useState<Estudante[]>([])
+  const [carregandoEstudantes, setCarregandoEstudantes] = useState(true)
+  const [erroEstudantes, setErroEstudantes] = useState('')
+
+  useEffect(() => {
+    let ativo = true
+
+    async function carregarEstudantes() {
+      setCarregandoEstudantes(true)
+      setErroEstudantes('')
+
+      try {
+        const resposta = await fetch('http://localhost:8080/estudantes')
+
+        if (!resposta.ok) {
+          throw new Error('Não foi possível carregar a lista de estudantes.')
+        }
+
+        const dados: Estudante[] = await resposta.json()
+
+        if (ativo) {
+          setEstudantes(dados)
+        }
+      } catch (error) {
+        if (ativo) {
+          setErroEstudantes(
+            error instanceof Error
+              ? error.message
+              : 'Erro inesperado ao carregar os estudantes.'
+          )
+        }
+      } finally {
+        if (ativo) {
+          setCarregandoEstudantes(false)
+        }
+      }
+    }
+
+    carregarEstudantes()
+
+    return () => {
+      ativo = false
+    }
+  }, [])
 
   function atualizarCampo(
     campo: keyof NucleoFamiliar,
@@ -77,7 +127,7 @@ function CadastroNucleoFamiliar() {
     setErro('')
 
     if (!formulario.idAluno || formulario.idAluno <= 0) {
-      setErro('Informe um ID de estudante válido.')
+      setErro('Selecione um estudante da lista antes de cadastrar o familiar.')
       return
     }
 
@@ -100,6 +150,20 @@ function CadastroNucleoFamiliar() {
 
     const dados = {
       ...formulario,
+
+      // Campo opcional: texto vazio deve ser enviado como null.
+      numeroNisFamiliar:
+        formulario.numeroNisFamiliar.trim() === ''
+          ? null
+          : formulario.numeroNisFamiliar.trim(),
+
+      // Campo opcional: texto vazio deve ser enviado como null.
+      cpf:
+        formulario.cpf.trim() === ''
+          ? null
+          : formulario.cpf.trim(),
+
+      // Campo numérico opcional.
       valorRendaMensal:
         formulario.valorRendaMensal === ''
           ? null
@@ -170,28 +234,58 @@ function CadastroNucleoFamiliar() {
           <h2>1. Identificação do familiar</h2>
 
           <div className="form-grid">
-            <div className="campo">
+            <div className="campo campo-largo">
               <label htmlFor="idAluno">
-                ID do estudante <span aria-hidden="true">*</span>
+                Estudante associado ao núcleo familiar{' '}
+                <span aria-hidden="true">*</span>
               </label>
 
-              <input
+              <select
                 id="idAluno"
-                type="number"
-                min="1"
                 value={formulario.idAluno || ''}
                 onChange={(event) =>
                   atualizarCampo(
                     'idAluno',
-                    Number(event.target.value)
+                    event.target.value === ''
+                      ? 0
+                      : Number(event.target.value)
                   )
                 }
                 required
-              />
+                disabled={carregandoEstudantes || estudantes.length === 0}
+                aria-describedby="ajudaEstudante erroEstudantes"
+              >
+                <option value="">
+                  {carregandoEstudantes
+                    ? 'Carregando estudantes...'
+                    : estudantes.length === 0
+                      ? 'Nenhum estudante disponível'
+                      : 'Selecione um estudante'}
+                </option>
 
-              <small>
-                Informe o ID do estudante já cadastrado.
+                {estudantes.map((estudante) => (
+                  <option
+                    key={estudante.idAluno}
+                    value={estudante.idAluno}
+                  >
+                    {estudante.nomeCompleto}
+                    {estudante.nomeSocial
+                      ? ` (${estudante.nomeSocial})`
+                      : ''}
+                    {' — ID '}{estudante.idAluno}
+                  </option>
+                ))}
+              </select>
+
+              <small id="ajudaEstudante">
+                Selecione o nome do estudante. O sistema enviará o ID correspondente.
               </small>
+
+              {erroEstudantes && (
+                <small id="erroEstudantes" role="alert">
+                  {erroEstudantes} Verifique se o backend está funcionando e tente recarregar a página.
+                </small>
+              )}
             </div>
 
             <div className="campo">

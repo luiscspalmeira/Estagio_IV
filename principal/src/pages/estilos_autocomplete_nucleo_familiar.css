@@ -1,0 +1,88 @@
+/* Acrescente estas regras ao final de CadastroNucleoFamiliar.css */
+.campo-busca-estudante {
+  position: relative;
+}
+
+.resultados-estudantes {
+  position: absolute;
+  top: calc(100% - 1.4rem);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  max-height: 280px;
+  overflow-y: auto;
+  background: #ffffff;
+  color: #222222;
+  border: 1px solid #aeb7c2;
+  border-radius: 0.35rem;
+  box-shadow: 0 5px 14px rgb(0 0 0 / 18%);
+}
+
+.resultado-estudante {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 0;
+  border-bottom: 1px solid #e3e6ea;
+  background: #ffffff;
+  color: #222222;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.resultado-estudante:last-child {
+  border-bottom: 0;
+}
+
+.resultado-estudante:hover,
+.resultado-estudante:focus-visible {
+  background: #edf4ff;
+  outline: 2px solid #2459a9;
+  outline-offset: -2px;
+}
+
+.nome-social-estudante {
+  color: #4b5563;
+}
+
+.resultado-estudante-id {
+  flex: 0 0 auto;
+  color: #374151;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.sem-resultados-estudantes {
+  margin: 0;
+  padding: 0.85rem 0.9rem;
+  color: #333333;
+}
+
+.estudante-selecionado {
+  display: block;
+  margin-top: 0.35rem;
+  font-weight: 600;
+}
+
+body.alto-contraste .resultados-estudantes,
+body.alto-contraste .resultado-estudante {
+  background: #000000;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+body.alto-contraste .resultado-estudante:hover,
+body.alto-contraste .resultado-estudante:focus-visible {
+  background: #222222;
+  outline-color: #ffff00;
+}
+
+body.alto-contraste .nome-social-estudante,
+body.alto-contraste .resultado-estudante-id,
+body.alto-contraste .sem-resultados-estudantes {
+  color: #ffffff;
+}
