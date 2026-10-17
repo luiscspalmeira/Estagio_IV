@@ -1,7 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 import './ConsultaEstudantes.css'
 
-type Estudante = Record<string, unknown>
+const API = 'http://localhost:8080'
+
+type Registro = Record<string, unknown>
+type Estudante = Registro
+
+type Documento = {
+  idDocumento: string
+  tipoDocumento: string
+  linkArquivo: string
+}
 
 function normalizarTexto(valor: string) {
   return valor
@@ -47,32 +56,254 @@ function obterTextoPesquisa(valor: unknown): string {
   return String(valor)
 }
 
-function obterIdentificador(estudante: Estudante, indice: number) {
-  const identificador =
-    estudante.idAluno ??
-    estudante.id_aluno ??
-    estudante.id
+function obterCampo(
+  registro: Registro,
+  ...nomes: string[]
+): unknown {
+  for (const nome of nomes) {
+    if (registro[nome] !== undefined && registro[nome] !== null) {
+      return registro[nome]
+    }
+  }
 
-  return identificador !== null && identificador !== undefined
+  return undefined
+}
+
+function obterIdentificador(estudante: Estudante, indice: number) {
+  const identificador = obterCampo(
+    estudante,
+    'idAluno',
+    'id_aluno',
+    'id'
+  )
+
+  return identificador !== undefined
     ? String(identificador)
     : `registro-${indice}`
 }
 
+function obterIdentificadorDocumento(
+  documento: Registro
+): string {
+  const id = obterCampo(
+    documento,
+    'idDocumento',
+    'id_documento'
+  )
+
+  return id === undefined ? '' : String(id)
+}
+
+function obterIdentificadorAluno(
+  vinculo: Registro
+): string {
+  // Na entidade DocumentoEstudante, os IDs ficam dentro de "id".
+  const idComposto = vinculo.id
+
+  if (idComposto && typeof idComposto === 'object') {
+    const composto = idComposto as Registro
+
+    const idAluno = obterCampo(
+      composto,
+      'idAluno',
+      'id_aluno'
+    )
+
+    if (idAluno !== undefined) {
+      return String(idAluno)
+    }
+  }
+
+  const idAluno = obterCampo(
+    vinculo,
+    'idAluno',
+    'id_aluno'
+  )
+
+  return idAluno === undefined ? '' : String(idAluno)
+}
+
+function obterDocumentoDoVinculo(
+  vinculo: Registro
+): string {
+  const idComposto = vinculo.id
+
+  if (idComposto && typeof idComposto === 'object') {
+    const composto = idComposto as Registro
+
+    const idDocumento = obterCampo(
+      composto,
+      'idDocumento',
+      'id_documento'
+    )
+
+    if (idDocumento !== undefined) {
+      return String(idDocumento)
+    }
+  }
+
+  const idDocumento = obterCampo(
+    vinculo,
+    'idDocumento',
+    'id_documento'
+  )
+
+  return idDocumento === undefined
+    ? ''
+    : String(idDocumento)
+}
+
+function obterEnderecoFoto(link: string): string {
+  if (/^https?:\/\//i.test(link)) {
+    return link
+  }
+
+  return `${API}${link.startsWith('/') ? '' : '/'}${link}`
+}
+
+function FotoEstudante({
+  src,
+  nome,
+}: {
+  src?: string
+  nome: string
+}) {
+  const [erroImagem, setErroImagem] = useState(false)
+
+  useEffect(() => {
+    setErroImagem(false)
+  }, [src])
+
+  if (!src || erroImagem) {
+    return (
+      <div
+        className="consulta-estudante-foto consulta-estudante-foto-alternativa"
+        role="img"
+        aria-label={`Foto não disponível para ${nome}`}
+      >
+        <span aria-hidden="true">👤</span>
+        <span>Foto não disponível</span>
+      </div>
+    )
+  }
+
+  return (
+    <img
+      className="consulta-estudante-foto"
+      src={src}
+      alt={`Foto de ${nome}`}
+      loading="lazy"
+      onError={() => setErroImagem(true)}
+    />
+  )
+}
+
 function ConsultaEstudantes() {
   const [estudantes, setEstudantes] = useState<Estudante[]>([])
+  const [fotosPorAluno, setFotosPorAluno] =
+    useState<Record<string, string>>({})
   const [busca, setBusca] = useState('')
   const [carregando, setCarregando] = useState(true)
   const [erro, setErro] = useState('')
-  const [estudanteAberto, setEstudanteAberto] = useState<string | null>(null)
+  const [estudanteAberto, setEstudanteAberto] =
+    useState<string | null>(null)
+
+  async function carregarFotos(): Promise<Record<string, string>> {
+    try {
+      const [respostaDocumentos, respostaVinculos] =
+        await Promise.all([
+          fetch(
+            `${API}/documentos/tipo/Foto%20do%20estudante`
+          ),
+          fetch(`${API}/documentos-estudantes`),
+        ])
+
+      if (!respostaDocumentos.ok || !respostaVinculos.ok) {
+        console.warn(
+          'Não foi possível consultar todos os documentos das fotos.'
+        )
+        return {}
+      }
+
+      const dadosDocumentos: unknown =
+        await respostaDocumentos.json()
+      const dadosVinculos: unknown =
+        await respostaVinculos.json()
+
+      if (
+        !Array.isArray(dadosDocumentos) ||
+        !Array.isArray(dadosVinculos)
+      ) {
+        return {}
+      }
+
+      const documentos = dadosDocumentos as Registro[]
+      const vinculos = dadosVinculos as Registro[]
+
+      const documentosPorId = new Map<string, Documento>()
+
+      for (const registro of documentos) {
+        const idDocumento = obterIdentificadorDocumento(registro)
+        const tipoDocumento = String(
+          obterCampo(
+            registro,
+            'tipoDocumento',
+            'tipo_documento'
+          ) ?? ''
+        )
+
+        const linkArquivo = obterCampo(
+          registro,
+          'linkArquivo',
+          'link_arquivo'
+        )
+
+        if (
+          idDocumento &&
+          normalizarTexto(tipoDocumento) ===
+            normalizarTexto('Foto do estudante') &&
+          typeof linkArquivo === 'string' &&
+          linkArquivo.trim() !== ''
+        ) {
+          documentosPorId.set(idDocumento, {
+            idDocumento,
+            tipoDocumento,
+            linkArquivo,
+          })
+        }
+      }
+
+      const fotos: Record<string, string> = {}
+
+      for (const vinculo of vinculos) {
+        const idAluno = obterIdentificadorAluno(vinculo)
+        const idDocumento = obterDocumentoDoVinculo(vinculo)
+        const documento = documentosPorId.get(idDocumento)
+
+        if (
+          idAluno &&
+          documento &&
+          !fotos[idAluno]
+        ) {
+          fotos[idAluno] = obterEnderecoFoto(
+            documento.linkArquivo
+          )
+        }
+      }
+
+      return fotos
+    } catch (error) {
+      console.error('Erro ao consultar fotos dos estudantes:', error)
+      return {}
+    }
+  }
 
   async function carregarEstudantes() {
     setCarregando(true)
     setErro('')
 
     try {
-      const resposta = await fetch(
-        'http://localhost:8080/estudantes'
-      )
+      const resposta = await fetch(`${API}/estudantes`)
 
       if (!resposta.ok) {
         throw new Error(
@@ -89,6 +320,9 @@ function ConsultaEstudantes() {
       }
 
       setEstudantes(dados as Estudante[])
+
+      const fotos = await carregarFotos()
+      setFotosPorAluno(fotos)
       setEstudanteAberto(null)
     } catch (error) {
       setErro(
@@ -108,25 +342,25 @@ function ConsultaEstudantes() {
   const estudantesFiltrados = useMemo(() => {
     const termo = normalizarTexto(busca.trim())
 
+    const lista = estudantes.map((estudante, indice) => ({
+      estudante,
+      chave: obterIdentificador(estudante, indice),
+    }))
+
     if (!termo) {
-      return estudantes.map((estudante, indice) => ({
-        estudante,
-        chave: obterIdentificador(estudante, indice),
-      }))
+      return lista
     }
 
-    return estudantes
-      .map((estudante, indice) => ({
-        estudante,
-        chave: obterIdentificador(estudante, indice),
-      }))
-      .filter(({ estudante }) => {
-        const conteudo = Object.entries(estudante)
-          .map(([campo, valor]) => `${campo} ${obterTextoPesquisa(valor)}`)
-          .join(' ')
+    return lista.filter(({ estudante }) => {
+      const conteudo = Object.entries(estudante)
+        .map(
+          ([campo, valor]) =>
+            `${campo} ${obterTextoPesquisa(valor)}`
+        )
+        .join(' ')
 
-        return normalizarTexto(conteudo).includes(termo)
-      })
+      return normalizarTexto(conteudo).includes(termo)
+    })
   }, [estudantes, busca])
 
   return (
@@ -135,8 +369,8 @@ function ConsultaEstudantes() {
         <h1>Consulta de Estudantes</h1>
 
         <p>
-          Consulte os estudantes cadastrados e visualize os dados
-          disponibilizados pelo sistema.
+          Consulte os estudantes cadastrados e visualize seus
+          dados e fotografias.
         </p>
       </header>
 
@@ -195,7 +429,8 @@ function ConsultaEstudantes() {
         <div className="consulta-estudantes-vazio">
           <h2>Nenhum estudante cadastrado</h2>
           <p>
-            Quando houver estudantes cadastrados, eles aparecerão nesta página.
+            Quando houver estudantes cadastrados, eles aparecerão
+            nesta página.
           </p>
         </div>
       )}
@@ -207,7 +442,8 @@ function ConsultaEstudantes() {
           <div className="consulta-estudantes-vazio">
             <h2>Nenhum resultado encontrado</h2>
             <p>
-              Verifique o texto digitado ou tente pesquisar por outro dado.
+              Verifique o texto digitado ou tente pesquisar por
+              outro dado.
             </p>
           </div>
         )}
@@ -215,16 +451,22 @@ function ConsultaEstudantes() {
       {!carregando && !erro && estudantesFiltrados.length > 0 && (
         <div className="consulta-estudantes-lista">
           {estudantesFiltrados.map(({ estudante, chave }) => {
-            const nome =
-              estudante.nomeCompleto ??
-              estudante.nome_completo ??
-              estudante.nome ??
-              'Nome não informado'
+            const nome = String(
+              obterCampo(
+                estudante,
+                'nomeCompleto',
+                'nome_completo',
+                'nome'
+              ) ?? 'Nome não informado'
+            )
 
-            const nomeSocial =
-              estudante.nomeSocial ??
-              estudante.nome_social
+            const nomeSocial = obterCampo(
+              estudante,
+              'nomeSocial',
+              'nome_social'
+            )
 
+            const foto = fotosPorAluno[chave]
             const aberto = estudanteAberto === chave
 
             return (
@@ -233,8 +475,10 @@ function ConsultaEstudantes() {
                 key={chave}
               >
                 <div className="consulta-estudante-resumo">
+                  <FotoEstudante src={foto} nome={nome} />
+
                   <div className="consulta-estudante-identificacao">
-                    <h2>{formatarValor(nome)}</h2>
+                    <h2>{nome}</h2>
 
                     {nomeSocial !== null &&
                       nomeSocial !== undefined &&
@@ -267,17 +511,17 @@ function ConsultaEstudantes() {
                     <h3>Informações do estudante</h3>
 
                     <dl className="consulta-estudante-campos">
-                      {Object.entries(estudante).map(([campo, valor]) => (
-                        <div
-                          className="consulta-estudante-campo"
-                          key={campo}
-                        >
-                          <dt>{formatarNomeCampo(campo)}</dt>
-                          <dd>
-                            {formatarValor(valor)}
-                          </dd>
-                        </div>
-                      ))}
+                      {Object.entries(estudante).map(
+                        ([campo, valor]) => (
+                          <div
+                            className="consulta-estudante-campo"
+                            key={campo}
+                          >
+                            <dt>{formatarNomeCampo(campo)}</dt>
+                            <dd>{formatarValor(valor)}</dd>
+                          </div>
+                        )
+                      )}
                     </dl>
                   </div>
                 )}

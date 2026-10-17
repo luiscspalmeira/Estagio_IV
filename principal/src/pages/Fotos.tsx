@@ -86,20 +86,16 @@ function Fotos() {
 
 function adicionarComentario(
   postId: number,
-  nome: string,
   texto: string
 ) {
-
   const novosPosts = posts.map((post) => {
-
     if (post.id === postId) {
-
       const novoComentario: Comentario = {
-  id: Date.now(),
-  autor: nome,
-  texto: texto,
-  data: new Date().toLocaleString('pt-BR')
-}
+        id: Date.now(),
+        autor: 'Visitante',
+        texto: texto,
+        data: new Date().toLocaleString('pt-BR')
+      }
 
       return {
         ...post,
@@ -111,7 +107,6 @@ function adicionarComentario(
     }
 
     return post
-
   })
 
   setPosts(novosPosts)

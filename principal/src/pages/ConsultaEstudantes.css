@@ -228,3 +228,66 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Fotografia do estudante */
+.consulta-estudante-foto {
+  display: block;
+  flex: 0 0 120px;
+  width: 120px;
+  height: 140px;
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+}
+
+/* Alternativa para estudantes sem foto */
+.consulta-estudante-foto-alternativa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  color: #505050;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.consulta-estudante-foto-alternativa span:first-child {
+  font-size: 2rem;
+}
+
+/* Organização da foto, identificação e botão */
+.consulta-estudante-resumo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  padding: 20px;
+}
+
+.consulta-estudante-identificacao {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 700px) {
+  .consulta-estudante-resumo {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .consulta-estudante-foto {
+    flex-basis: auto;
+    width: 120px;
+    height: 140px;
+  }
+
+  .consulta-estudante-identificacao {
+    width: 100%;
+    text-align: center;
+  }
+}
