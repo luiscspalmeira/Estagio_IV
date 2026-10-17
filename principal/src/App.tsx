@@ -41,6 +41,7 @@ import DocumentoEstudante from "./pages/DocumentoEstudante";
 import DocumentoFamiliar from "./pages/DocumentoFamiliar";
 import DocumentoResponsavel from "./pages/DocumentoResponsavel";
 import DocumentoEquipe from "./pages/DocumentoEquipe";
+import ConsultaEstudantes from './pages/ConsultaEstudantes'
 
 
 
@@ -65,6 +66,11 @@ function App() {
           <Route
             path="/cadastro/estudante"
             element={<CadastroEstudante />}
+          />
+
+          <Route
+            path="/consulta/estudantes"
+            element={<ConsultaEstudantes />}
           />
 
           <Route 

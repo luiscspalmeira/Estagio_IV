@@ -13,12 +13,17 @@ function Navbar() {
   const [cadastroAberto, setCadastroAberto] =
     useState(false);
 
+  const [consultaAberta, setConsultaAberta] =
+  useState(false);
+
   const [restaurando, setRestaurando] =
     useState(false);
 
   const dropdownRef =
     useRef<HTMLDivElement>(null);
 
+  const consultaDropdownRef =
+    useRef<HTMLDivElement>(null);
 
   /*
    * Fecha o dropdown quando o usuário
@@ -34,10 +39,18 @@ function Navbar() {
         dropdownRef.current &&
         !dropdownRef.current.contains(
           event.target as Node
+      )
+    ) {
+        setCadastroAberto(false);
+      }
+
+      if (
+        consultaDropdownRef.current &&
+        !consultaDropdownRef.current.contains(
+          event.target as Node
         )
       ) {
-
-        setCadastroAberto(false);
+        setConsultaAberta(false);
       }
     }
 
@@ -258,7 +271,12 @@ function Navbar() {
    * do menu principal é selecionado.
    */
   function fecharCadastro() {
+    setCadastroAberto(false);
+    setConsultaAberta(false);
+  }
 
+  function fecharConsulta() {
+    setConsultaAberta(false);
     setCadastroAberto(false);
   }
 
@@ -706,7 +724,83 @@ function Navbar() {
           )}
 
         </div>
+        
+                {/* ========================= */}
+        {/* MENU CONSULTA */}
+        {/* ========================= */}
 
+        <div
+          className="dropdown"
+          ref={consultaDropdownRef}
+        >
+          <button
+            type="button"
+            className="dropdown-button"
+            onClick={() => {
+              setConsultaAberta(!consultaAberta);
+              setCadastroAberto(false);
+            }}
+            aria-expanded={consultaAberta}
+            aria-haspopup="true"
+          >
+            Consulta
+
+            <span
+              className={
+                consultaAberta
+                  ? "dropdown-seta aberta"
+                  : "dropdown-seta"
+              }
+            >
+              ▼
+            </span>
+          </button>
+
+          {consultaAberta && (
+            <div className="dropdown-menu">
+              <div className="dropdown-section">
+                <div className="dropdown-title">
+                  Consultas
+                </div>
+
+                <Link
+                  to="/consulta/estudantes"
+                  onClick={fecharConsulta}
+                >
+                  👨‍🎓 Consulta de Estudantes
+                </Link>
+
+                <Link
+                  to="/consulta/acervo-espetaculos"
+                  onClick={fecharConsulta}
+                >
+                  🎭 Consulta de Acervo e Espetáculos
+                </Link>
+
+                <Link
+                  to="/consulta/cursos"
+                  onClick={fecharConsulta}
+                >
+                  🎓 Consulta de Cursos
+                </Link>
+
+                <Link
+                  to="/consulta/equipe"
+                  onClick={fecharConsulta}
+                >
+                  👥 Consulta de Equipe
+                </Link>
+
+                <Link
+                  to="/consulta/documentos"
+                  onClick={fecharConsulta}
+                >
+                  📄 Consulta de Documentos
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* ========================= */}
         {/* BACKUP */}

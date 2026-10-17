@@ -1,0 +1,230 @@
+.consulta-estudantes {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+  box-sizing: border-box;
+  color: #222222;
+}
+
+.consulta-estudantes *,
+.consulta-estudantes *::before,
+.consulta-estudantes *::after {
+  box-sizing: border-box;
+}
+
+.consulta-estudantes-cabecalho {
+  margin-bottom: 28px;
+}
+
+.consulta-estudantes-cabecalho h1 {
+  margin: 0 0 12px;
+  font-size: 2rem;
+  line-height: 1.3;
+}
+
+.consulta-estudantes-cabecalho p {
+  margin: 0;
+  color: #505050;
+  line-height: 1.6;
+}
+
+.consulta-estudantes-pesquisa {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.consulta-estudantes-pesquisa label {
+  font-weight: 700;
+}
+
+.consulta-estudantes-pesquisa input {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 14px;
+  border: 1px solid #767676;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #222222;
+  font: inherit;
+}
+
+.consulta-estudantes-pesquisa input:focus-visible {
+  outline: 3px solid #155eef;
+  outline-offset: 2px;
+}
+
+.consulta-estudantes-pesquisa small {
+  color: #505050;
+  line-height: 1.5;
+}
+
+.consulta-estudantes-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.consulta-estudantes-acoes p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.consulta-estudantes-botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid #174ea6;
+  border-radius: 6px;
+  background-color: #174ea6;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+
+.consulta-estudantes-botao:hover:not(:disabled) {
+  background-color: #123d82;
+}
+
+.consulta-estudantes-botao:focus-visible {
+  outline: 3px solid #155eef;
+  outline-offset: 3px;
+}
+
+.consulta-estudantes-botao:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.consulta-estudantes-erro,
+.consulta-estudantes-vazio {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #b8b8b8;
+  border-radius: 8px;
+  background-color: #f7f7f7;
+}
+
+.consulta-estudantes-erro {
+  border-left: 5px solid #b42318;
+}
+
+.consulta-estudantes-erro p,
+.consulta-estudantes-vazio p {
+  line-height: 1.6;
+}
+
+.consulta-estudantes-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.consulta-estudante-card {
+  overflow: hidden;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 5%);
+}
+
+.consulta-estudante-resumo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+}
+
+.consulta-estudante-identificacao {
+  min-width: 0;
+}
+
+.consulta-estudante-identificacao h2 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+  overflow-wrap: anywhere;
+}
+
+.consulta-estudante-identificacao p {
+  margin: 6px 0 0;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.consulta-estudante-detalhes {
+  padding: 20px;
+  border-top: 1px solid #d0d0d0;
+  background-color: #fafafa;
+}
+
+.consulta-estudante-detalhes h3 {
+  margin: 0 0 18px;
+  font-size: 1.1rem;
+}
+
+.consulta-estudante-campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+}
+
+.consulta-estudante-campo {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #dedede;
+  border-radius: 6px;
+  background-color: #ffffff;
+}
+
+.consulta-estudante-campo dt {
+  margin-bottom: 7px;
+  color: #404040;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.consulta-estudante-campo dd {
+  margin: 0;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+  .consulta-estudantes {
+    padding: 24px 16px 36px;
+  }
+
+  .consulta-estudantes-cabecalho h1 {
+    font-size: 1.6rem;
+  }
+
+  .consulta-estudantes-acoes {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .consulta-estudante-resumo {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .consulta-estudante-resumo .consulta-estudantes-botao {
+    width: 100%;
+  }
+
+  .consulta-estudante-campos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

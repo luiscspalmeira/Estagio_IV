@@ -1,14 +1,13 @@
-
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './CadastroEstudante.css'
 
 function CadastroEstudante() {
-
   const [nomeCompleto, setNomeCompleto] = useState('')
   const [nomeSocial, setNomeSocial] = useState('')
   const [cpf, setCpf] = useState('')
   const [dataNascimento, setDataNascimento] = useState('')
-  const [localNascimentoNaturalidade, setLocalNascimentoNaturalidade] = useState('')
+  const [localNascimentoNaturalidade, setLocalNascimentoNaturalidade] =
+    useState('')
   const [corRaca, setCorRaca] = useState('')
   const [genero, setGenero] = useState('')
   const [cep, setCep] = useState('')
@@ -20,70 +19,150 @@ function CadastroEstudante() {
   const [numeroNis, setNumeroNis] = useState('')
   const [telefoneEstudante, setTelefoneEstudante] = useState('')
   const [emailEstudante, setEmailEstudante] = useState('')
-  const [totalPessoasNucleoFamiliar, setTotalPessoasNucleoFamiliar] = useState('')
+  const [totalPessoasNucleoFamiliar, setTotalPessoasNucleoFamiliar] =
+    useState('')
+
+  // Estados para a foto opcional do estudante.
+  const [foto, setFoto] = useState<File | null>(null)
+  const [fotoPreview, setFotoPreview] = useState('')
 
   const [mensagem, setMensagem] = useState('')
+  const [enviando, setEnviando] = useState(false)
 
+  // Libera o endereço temporário da imagem quando a pré-visualização muda.
+  useEffect(() => {
+    return () => {
+      if (fotoPreview) {
+        URL.revokeObjectURL(fotoPreview)
+      }
+    }
+  }, [fotoPreview])
+
+  // Valida e seleciona a foto.
+  function handleFotoChange(
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
+    const arquivo = event.target.files?.[0] ?? null
+
+    if (!arquivo) {
+      setFoto(null)
+      setFotoPreview('')
+      return
+    }
+
+    const tiposPermitidos = [
+      'image/jpeg',
+      'image/png',
+      'image/webp'
+    ]
+
+    if (!tiposPermitidos.includes(arquivo.type)) {
+      setMensagem(
+        'Formato inválido. Selecione uma imagem JPG, JPEG, PNG ou WebP.'
+      )
+
+      event.target.value = ''
+      setFoto(null)
+      setFotoPreview('')
+      return
+    }
+
+    const tamanhoMaximo = 5 * 1024 * 1024
+
+    if (arquivo.size > tamanhoMaximo) {
+      setMensagem('A foto não pode ultrapassar 5 MB.')
+
+      event.target.value = ''
+      setFoto(null)
+      setFotoPreview('')
+      return
+    }
+
+    setFoto(arquivo)
+    setFotoPreview(URL.createObjectURL(arquivo))
+    setMensagem('')
+  }
+
+  // Envia os dados do estudante e, se selecionada, a foto.
   async function handleSubmit(
     event: React.FormEvent<HTMLFormElement>
   ) {
     event.preventDefault()
 
+    if (enviando) {
+      return
+    }
+
+    setEnviando(true)
     setMensagem('Cadastrando estudante...')
 
     try {
+      // Mantém os campos utilizados no cadastro atual.
+      const dadosEstudante = {
+        nomeCompleto,
+        nomeSocial: nomeSocial || null,
+        cpf,
+        dataNascimento,
+        localNascimentoNaturalidade:
+          localNascimentoNaturalidade || null,
+        corRaca: corRaca || null,
+        genero: genero || null,
+        cep: cep || null,
+        enderecoCompleto: enderecoCompleto || null,
+        cidadeOndeReside: cidadeOndeReside || null,
+        escolaRegularOndeEstuda:
+          escolaRegularOndeEstuda || null,
+        serieAnoEscolaRegular:
+          serieAnoEscolaRegular || null,
+        cadastroUnico,
+        numeroNis: numeroNis || null,
+        telefoneEstudante: telefoneEstudante || null,
+        emailEstudante: emailEstudante || null,
+        totalPessoasNucleoFamiliar:
+          totalPessoasNucleoFamiliar
+            ? Number(totalPessoasNucleoFamiliar)
+            : null
+      }
+
+      // Cria o formulário multipart.
+      const formulario = new FormData()
+
+      formulario.append(
+        'estudante',
+        new Blob(
+          [JSON.stringify(dadosEstudante)],
+          { type: 'application/json' }
+        )
+      )
+
+      // A foto é opcional.
+      if (foto) {
+        formulario.append('foto', foto)
+      }
 
       const resposta = await fetch(
-        'http://localhost:8080/estudantes',
+        'http://localhost:8080/estudantes/com-foto',
         {
           method: 'POST',
-
-          headers: {
-            'Content-Type': 'application/json'
-          },
-
-          body: JSON.stringify({
-            nomeCompleto,
-            nomeSocial: nomeSocial || null,
-            cpf,
-            dataNascimento,
-            localNascimentoNaturalidade:
-              localNascimentoNaturalidade || null,
-            corRaca: corRaca || null,
-            genero: genero || null,
-            cep: cep || null,
-            enderecoCompleto: enderecoCompleto || null,
-            cidadeOndeReside: cidadeOndeReside || null,
-            escolaRegularOndeEstuda:
-              escolaRegularOndeEstuda || null,
-            serieAnoEscolaRegular:
-              serieAnoEscolaRegular || null,
-            cadastroUnico,
-            numeroNis: numeroNis || null,
-            telefoneEstudante:
-              telefoneEstudante || null,
-            emailEstudante:
-              emailEstudante || null,
-            totalPessoasNucleoFamiliar:
-              totalPessoasNucleoFamiliar
-                ? Number(totalPessoasNucleoFamiliar)
-                : null
-          })
+          body: formulario
         }
       )
 
       if (!resposta.ok) {
-        throw new Error('Erro ao cadastrar estudante.')
+        const detalhe = await resposta.text()
+
+        throw new Error(
+          detalhe || 'Erro ao cadastrar estudante.'
+        )
       }
 
       const estudante = await resposta.json()
-
-      console.log('Estudante cadastrado:', estudante)
 
       setMensagem(
         `Estudante cadastrado com sucesso! ID: ${estudante.idAluno}`
       )
 
+      // Limpa os campos após o cadastro bem-sucedido.
       setNomeCompleto('')
       setNomeSocial('')
       setCpf('')
@@ -102,19 +181,34 @@ function CadastroEstudante() {
       setEmailEstudante('')
       setTotalPessoasNucleoFamiliar('')
 
-    } catch (error) {
+      setFoto(null)
+      setFotoPreview('')
 
-      console.error(error)
+      const campoFoto = document.getElementById(
+        'fotoEstudante'
+      ) as HTMLInputElement | null
+
+      if (campoFoto) {
+        campoFoto.value = ''
+      }
+    } catch (error) {
+      console.error('Erro ao cadastrar estudante:', error)
+
+      const mensagemErro =
+        error instanceof Error
+          ? error.message
+          : 'Não foi possível cadastrar o estudante.'
 
       setMensagem(
-        'Não foi possível cadastrar o estudante.'
+        `Não foi possível cadastrar o estudante. ${mensagemErro}`
       )
+    } finally {
+      setEnviando(false)
     }
   }
 
   return (
     <div className="cadastro-estudante-container">
-
       <h1>Cadastro de Estudante</h1>
 
       <p>
@@ -122,7 +216,6 @@ function CadastroEstudante() {
       </p>
 
       <form onSubmit={handleSubmit}>
-
         <div>
           <label htmlFor="nomeCompleto">
             Nome completo
@@ -203,88 +296,83 @@ function CadastroEstudante() {
           />
         </div>
 
-      
-<div>
-  <label htmlFor="corRaca">
-    Cor / Raça
-  </label>
+        <div>
+          <label htmlFor="corRaca">
+            Cor / Raça
+          </label>
 
-  <select
-    id="corRaca"
-    name="corRaca"
-    value={corRaca}
-    onChange={(e) => setCorRaca(e.target.value)}
-  >
-    <option value="">
-      Selecione
-    </option>
+          <select
+            id="corRaca"
+            name="corRaca"
+            value={corRaca}
+            onChange={(e) => setCorRaca(e.target.value)}
+          >
+            <option value="">
+              Selecione
+            </option>
 
-    <option value="Branca">
-      Branca
-    </option>
+            <option value="Branca">
+              Branca
+            </option>
 
-    <option value="Preta">
-      Preta
-    </option>
+            <option value="Preta">
+              Preta
+            </option>
 
-    <option value="Parda">
-      Parda
-    </option>
+            <option value="Parda">
+              Parda
+            </option>
 
-    <option value="Amarela">
-      Amarela
-    </option>
+            <option value="Amarela">
+              Amarela
+            </option>
 
-    <option value="Indígena">
-      Indígena
-    </option>
-  </select>
-</div>
+            <option value="Indígena">
+              Indígena
+            </option>
+          </select>
+        </div>
 
+        <div>
+          <label htmlFor="genero">
+            Gênero
+          </label>
 
+          <select
+            id="genero"
+            name="genero"
+            value={genero}
+            onChange={(e) => setGenero(e.target.value)}
+          >
+            <option value="">
+              Selecione
+            </option>
 
-      
-<div>
-  <label htmlFor="genero">
-    Gênero
-  </label>
+            <option value="Mulher">
+              Mulher
+            </option>
 
-  <select
-    id="genero"
-    name="genero"
-    value={genero}
-    onChange={(e) => setGenero(e.target.value)}
-  >
-    <option value="">
-      Selecione
-    </option>
+            <option value="Mulher trans">
+              Mulher trans
+            </option>
 
-    <option value="Mulher">
-      Mulher
-    </option>
+            <option value="Homem">
+              Homem
+            </option>
 
-    <option value="Mulher trans">
-      Mulher trans
-    </option>
+            <option value="Homem trans">
+              Homem trans
+            </option>
 
-    <option value="Homem">
-      Homem
-    </option>
+            <option value="Travesti">
+              Travesti
+            </option>
 
-    <option value="Homem trans">
-      Homem trans
-    </option>
-
-    <option value="Travesti">
-      Travesti
-    </option>
-
-    <option value="Não binário">
-      Não binário
-    </option>
-  </select>
-</div>
-
+            <option value="Não binário">
+              Não binário
+            </option>
+          </select>
+        </div>
 
         <div>
           <label htmlFor="cep">
@@ -456,21 +544,68 @@ function CadastroEstudante() {
           />
         </div>
 
-        <button type="submit">
-          Cadastrar estudante
-        </button>
+        {/* Campo opcional para a foto do estudante. */}
+        <div className="campo-foto">
+          <label htmlFor="fotoEstudante">
+            Foto do estudante (opcional)
+          </label>
 
+          <input
+            type="file"
+            id="fotoEstudante"
+            name="fotoEstudante"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={handleFotoChange}
+            aria-describedby="orientacao-foto"
+          />
+
+          <small id="orientacao-foto">
+            Formatos aceitos: JPG, JPEG, PNG e WebP.
+            Tamanho máximo: 5 MB.
+          </small>
+
+          {fotoPreview && (
+            <div className="foto-preview">
+              <img
+                src={fotoPreview}
+                alt="Pré-visualização da foto do estudante"
+              />
+
+              <button
+                type="button"
+                onClick={() => {
+                  setFoto(null)
+                  setFotoPreview('')
+
+                  const campo = document.getElementById(
+                    'fotoEstudante'
+                  ) as HTMLInputElement | null
+
+                  if (campo) {
+                    campo.value = ''
+                  }
+                }}
+              >
+                Remover foto
+              </button>
+            </div>
+          )}
+        </div>
+
+        <button type="submit" disabled={enviando}>
+          {enviando
+            ? 'Cadastrando...'
+            : 'Cadastrar estudante'}
+        </button>
       </form>
 
       {mensagem && (
-        <p>
+        <p role="status" aria-live="polite">
           {mensagem}
         </p>
       )}
-
     </div>
   )
 }
 
 export default CadastroEstudante
-
